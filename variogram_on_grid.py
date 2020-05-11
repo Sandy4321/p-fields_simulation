@@ -62,6 +62,7 @@ class Variogram_on_Grid:
         self.reals = reals
         self.n_lags = n_lags
         self.step = step
+        self.lag_lst = [i*step for i in range(1, self.n_lags+1)]
 
     def calculate(self):
         i, j, k = ijk(self.nx, self.ny, self.nz)
@@ -69,8 +70,8 @@ class Variogram_on_Grid:
         variances_horiz_list = []
         variances_vert_list = []
 
-        for lag in range(1, self.n_lags+1, self.step):
-            print("Calculating experimtnal variograms for step {}".format(lag))
+        for lag in self.lag_lst:
+            print("Calculating experimental variograms for step {}".format(lag))
             pairs_in_i = pairs_i_dir(i, j, k, lag)
             pairs_in_j = pairs_j_dir(i, j, k, lag)
             pairs_in_horiz = pairs_in_i + pairs_in_j
@@ -93,7 +94,7 @@ class Variogram_on_Grid:
                     variances_vert.append(variance_val_v)
         
             variances_horiz_list.append(variances_horiz)
-                
+
             if self.nz > 1:
             
                 variances_vert_list.append(variances_vert)
@@ -102,7 +103,7 @@ class Variogram_on_Grid:
         self.variances_vert_list = np.array(variances_vert_list).T
 
     def plot(self, horiz_block, vert_block, model):
-        x_axis_h = [lag*horiz_block for lag in range(1, self.n_lags+1, self.step)]
+        x_axis_h = [lag*horiz_block for lag in self.lag_lst]
         
         if self.nz == 1:
             fig, axes = plt.subplots(1, 1, constrained_layout=True, figsize=(7.5,5))
@@ -123,7 +124,7 @@ class Variogram_on_Grid:
             plt.show()
         
         else:
-            x_axis_v = [lag*vert_block for lag in range(1, self.n_lags+1, self.step)]
+            x_axis_v = [lag*vert_block for lag in self.lag_lst]
             fig, axes = plt.subplots(1, 2, constrained_layout=True, figsize=(15,5))
 
             for idx in range(len(self.variances_horiz_list)):

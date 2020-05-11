@@ -1,6 +1,7 @@
 import ar2gas as gas
 import pygeostat as gs
 import math
+import numpy as np
 
 def gslibvar_to_ar2gasvar(var_str):
     var_str = str(var_str)
@@ -40,3 +41,46 @@ def autogrid(x, y, z, sx, sy, sz, buffer=0):
     ny = math.ceil((max_y - oy)/(sy))
     
     return gas.data.CartesianGrid(nx, ny, nz, sx, sy, sz, ox, oy, oz), gs.GridDef([nx, ox, sx, ny, oy, sy, nz, oz, sz])
+
+def cat_random_sample(prob_list, u):
+
+    position = 0
+    probs = []
+    for idx, prob in enumerate(prob_list):
+        probs.append(prob)
+        acc = sum(probs)
+        if u <= acc:
+            position = idx
+            break
+
+    return position
+
+def cat_sampler(probs_matrix, codes, reals):
+    probs_matrix = np.array(probs_matrix).T
+    realizations = []
+    for real_idx, r in enumerate(reals):
+        realization = []
+        for idx, b in enumerate(np.array(r).T):
+            position = cat_random_sample(probs_matrix[idx], b)
+            realization.append(int(codes[position]))
+        realizations.append(realization)
+    return realizations
+
+def standardize(probs_matrix):
+    probs_matrix = np.array(probs_matrix)
+    probs_matrix = np.where(probs_matrix > 1, 1, probs_matrix)
+    probs_matrix = np.where(probs_matrix < 0, 0, probs_matrix)
+    probs_sum = sum(probs_matrix)
+    std_probs = [i / probs_sum for i in probs_matrix]
+    return std_probs
+
+def reals_to_indicators(cat_reals):
+    ind_reals = {}
+    codes = np.unique(cat_reals[0])
+    for c in codes:
+        ind_c = []
+        for real in cat_reals:
+            real_ind = np.where( (real == c) == True, 1, 0)
+            ind_c.append(real_ind)
+        ind_reals['ind_{}'.format(c)] = ind_c
+    return ind_reals
