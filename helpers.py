@@ -99,3 +99,13 @@ def samples_dist(x, y, z):
         dist, neighs = kdtree.query(p, k=2)
         min_dist.append(dist[1])
     gs.histplt(min_dist, icdf=True, title='Distance to the nearest sample')
+
+def entropy(prob_list):
+
+    if True in np.isnan(prob_list):
+        return float("nan")
+
+    else:
+        return -sum([prob*np.log2(prob) for prob in prob_list])
+
+
