@@ -2,6 +2,7 @@ import ar2gas as gas
 import pygeostat as gs
 import math
 import numpy as np
+from scipy.spatial import KDTree
 
 def gslibvar_to_ar2gasvar(var_str):
     var_str = str(var_str)
@@ -84,3 +85,17 @@ def reals_to_indicators(cat_reals):
             ind_c.append(real_ind)
         ind_reals['ind_{}'.format(c)] = ind_c
     return ind_reals
+
+def samples_dist(x, y, z):
+    if z == None:
+        z = np.zeros(len(x))
+    coords = []
+    min_dist = []
+    for i, j, k in zip(x, y, z):
+        coords.append((i, j, k))
+
+    kdtree = KDTree(coords)
+    for p in coords:
+        dist, neighs = kdtree.query(p, k=2)
+        min_dist.append(dist[1])
+    gs.histplt(min_dist, icdf=True, title='Distance to the nearest sample')
