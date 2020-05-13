@@ -100,12 +100,9 @@ def samples_dist(x, y, z):
         min_dist.append(dist[1])
     gs.histplt(min_dist, icdf=True, title='Distance to the nearest sample')
 
-def entropy(prob_list):
-
-    if True in np.isnan(prob_list):
-        return float("nan")
-
-    else:
-        return -sum([prob*np.log2(prob) for prob in prob_list])
-
-
+def u_coef(prob_list):
+    prob_list_t = np.array(prob_list).T
+    max_prob = [np.max(i) for i in prob_list_t]
+    pmax, pmin = np.max(max_prob), np.min(max_prob)
+    u = [(pmax-i)/(pmax-pmin) for i in max_prob]
+    return np.array(u)
