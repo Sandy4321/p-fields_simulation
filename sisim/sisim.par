@@ -6,7 +6,7 @@ START OF PARAMETERS:
 0                             -1=continuous(cdf), 0=categorical(pdf)
 3                             -number thresholds/categories
 0   100   200                 -   thresholds / categories
-0.19567852621137383 0.3478317363381246 0.4564897374505016                -   global cdf / pdf
+0.20078383471385983 0.346993703303526 0.4522224619826142                -   global cdf / pdf
 sisim/dataset.dat                        -file with data
 1   2   0   3                 -   columns for X,Y,Z, and variable
 direct.ik                     -file with soft indicator input
@@ -25,7 +25,7 @@ sisim/sisim.dbg                     -file for debugging output
 sisim/sisim.out                     -file for simulation output
 10                             -number of realizations
 1133 0.0 1.0 
-1114 0.0 1.0 
+1133 0.0 1.0 
 1 0.0 1.0
 162117                         -random number seed
 24                            -maximum original data  for each kriging
@@ -39,12 +39,12 @@ sisim/sisim.out                     -file for simulation output
 51    51    11                -size of covariance lookup table
 0    2.5                      -0=full IK, 1=median approx. (cutoff)
 1                             -0=SK, 1=OK
-1    0.012434518              -  nst, nugget effect
-2    0.144614900   0.0   0.0   0.0   - it,cc,ang1,ang2,ang3
-659.2981756082518    659.2981756082518    659.2981756082518       - a_hmax, a_hmin, a_vert
-1    0.014082077              -  nst, nugget effect
-1    0.216249634   0.0   0.0   0.0   - it,cc,ang1,ang2,ang3
-716.4172442987839    716.4172442987839    716.4172442987839       - a_hmax, a_hmin, a_vert
-1    0.007776611              -  nst, nugget effect
-1    0.239211856   0.0   0.0   0.0   - it,cc,ang1,ang2,ang3
-389.49655520136116    389.49655520136116    389.49655520136116       - a_hmax, a_hmin, a_vert
+1    0.016523691              -  nst, nugget effect
+2    0.164730076   0.0   0.0   0.0   - it,cc,ang1,ang2,ang3
+691.9896410275609    691.9896410275609    691.9896410275609       - a_hmax, a_hmin, a_vert
+1    0.002012568              -  nst, nugget effect
+1    0.212257271   0.0   0.0   0.0   - it,cc,ang1,ang2,ang3
+716.5496409678675    716.5496409678675    716.5496409678675       - a_hmax, a_hmin, a_vert
+1    0.002305101              -  nst, nugget effect
+1    0.245315431   0.0   0.0   0.0   - it,cc,ang1,ang2,ang3
+440.59270160105393    440.59270160105393    440.59270160105393       - a_hmax, a_hmin, a_vert
