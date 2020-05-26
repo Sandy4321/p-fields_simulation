@@ -74,6 +74,27 @@ def standardize(probs_matrix):
     probs_sum = sum(probs_matrix)
     std_probs = [i / probs_sum for i in probs_matrix]
     return std_probs
+    
+def sofmax_transformation(df_lst, gamma, var_type):
+	
+	prob_lst = np.empty(len(df_lst))
+
+	if True in np.isnan(df_lst):
+		prob_lst = np.ones(len(df_lst))*float("nan")
+
+	else:
+		exp_lst = [np.exp(-i/gamma) for i in df_lst] if var_type == 'Signed distances' else [np.exp(i/gamma) for i in df_lst]
+		for i, exp in enumerate(exp_lst):
+			prob = exp/sum(exp_lst)
+			prob_lst[i] = prob
+
+	return prob_lst
+
+def sofmax(prob_list, gamma, var_type='indicators'):
+    prob_list = np.array(prob_list)
+    probs_matrix = np.array([sofmax_transformation(sds, gamma, var_type) for sds in prob_list.T])
+    probs_matrix = probs_matrix.T
+    return probs_matrix
 
 def reals_to_indicators(cat_reals):
     ind_reals = {}
