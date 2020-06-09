@@ -36,7 +36,7 @@ sisim/sisim.out                     -file for simulation output
 0                             -maximum per octant    (0=not used)
 500.0  500.0  500.0                 -maximum search radii
 0.0   0.0   0.0              -angles for search ellipsoid
-51    51    11                -size of covariance lookup table
+501    501    101                -size of covariance lookup table
 0    2.5                      -0=full IK, 1=median approx. (cutoff)
 1                             -0=SK, 1=OK
 1    0.016523691              -  nst, nugget effect
