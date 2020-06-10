@@ -62,8 +62,12 @@ def cat_sampler(probs_matrix, codes, reals):
     for real_idx, r in enumerate(reals):
         realization = []
         for idx, b in enumerate(np.array(r).T):
-            position = cat_random_sample(probs_matrix[idx], b)
-            realization.append(int(codes[position]))
+            if np.isnan(b):
+                i = np.argmax(probs_matrix[idx])
+                realization.append(int(codes[i]))
+            else:
+                position = cat_random_sample(probs_matrix[idx], b)
+                realization.append(int(codes[position]))
         realizations.append(realization)
     return realizations
 
@@ -127,3 +131,17 @@ def u_coef(prob_list):
     pmax, pmin = np.max(max_prob), np.min(max_prob)
     u = [(pmax-i)/(pmax-pmin) for i in max_prob]
     return np.array(u)
+    
+def masked_sim(mask, reals):
+    reals_mask = []
+    for r in reals:
+        real_t = []
+        i = 0
+        for idx, v in enumerate(mask):
+            if v == True:
+                real_t.append(r[i])
+                i = i+1
+            else:
+                real_t.append(float('nan'))
+        reals_mask.append(np.array(real_t))
+    return reals_mask
