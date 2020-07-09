@@ -88,7 +88,7 @@ class Variogram:
         
         t1 = time.time()
         for lag in self.lag_lst:
-            print('Getting pairs for lag {}'.format(lag))
+            print('Getting pairs for step {}'.format(lag))
             pairs_in_i = pairs_i_dir(i, j, k, lag)
             pairs_in_j = pairs_j_dir(i, j, k, lag)
             pairs_in_horiz = pairs_in_i + pairs_in_j
@@ -103,7 +103,8 @@ class Variogram:
                 vert_pairs_lst.append(pairs_in_vert)
         t2 = time.time()
         t = t2 - t1
-        print('took {} seconds \n'.format(round(t, 2)))
+        print('took {} seconds'.format(round(t, 2)))
+        print('\n')
         
         t1 = time.time()
         for c in self.codes:
@@ -120,7 +121,7 @@ class Variogram:
                 variance_val = [1/2 * np.nanmean([variance(v) for v in vals]) for vals in values]
                 self.variances_codes[c]['variances_horiz_exhaust'] = variance_val
                 if self.nz > 1:
-                    values = [get_values(p, exhaust_ind) for p in pairs_in_vert]
+                    values = [get_values(p, exhaust_ind) for p in vert_pairs_lst]
                     variance_val = [1/2 * np.nanmean([variance(v) for v in vals]) for vals in values]
                     self.variances_codes[c]['variances_vert_exhaust'] = variance_val
         
@@ -130,9 +131,10 @@ class Variogram:
                 variance_val = [1/2 * np.nanmean([variance(v) for v in vals]) for vals in values] 
                 self.variances_codes[c]['variances_horiz_list'].append(variance_val)
                 if self.nz > 1:
-                    values = [get_values(p, real) for p in pairs_in_vert]
+                    values = [get_values(p, real) for p in vert_pairs_lst]
                     variance_val = [1/2 * np.nanmean([variance(v) for v in vals]) for vals in values]
                     self.variances_codes[c]['variances_vert_list'].append(variance_val)
+            print('\n')
         t2 = time.time()
         t = t2 - t1
         print('took {} seconds \n'.format(round(t, 2)))
@@ -142,7 +144,7 @@ class Variogram:
         x_axis_h = [lag*horiz_block for lag in self.lag_lst]
         x_axis_v = [lag*vert_block for lag in self.lag_lst] if self.nz > 1 else None
 
-        for idx, c in enumerate(self.codes):
+        for idxc, c in enumerate(self.codes):
 
             if self.nz == 1:
                 fig, axes = plt.subplots(1, 1, constrained_layout=True, figsize=(7.5,5))
@@ -155,7 +157,7 @@ class Variogram:
                     axes.grid(True)
                 
                 if models != None:
-                    cov = gas.compute.KrigingCovariance(1., models[idx])
+                    cov = gas.compute.KrigingCovariance(1., models[idxc])
                     sill = cov.compute([0,0,0],[0,0,0])
                     model_var_horiz = [sill-cov.compute([0,0,0],[pt,0,0]) for pt in x_axis_h]
                     axes.plot(x_axis_h, model_var_horiz, color='red')
@@ -181,8 +183,8 @@ class Variogram:
                     axes[1].set_title('Vertical cat {}'.format(c))
                     axes[1].grid(True)
                 
-                if models != None:
-                    cov = gas.compute.KrigingCovariance(1., models[idx])
+                if models is not None:
+                    cov = gas.compute.KrigingCovariance(1., models[idxc])
                     sill = cov.compute([0,0,0],[0,0,0])
                     model_var_horiz = [sill-cov.compute([0,0,0],[pt,0,0]) for pt in x_axis_h]
                     model_var_vert = [sill-cov.compute([0,0,0],[0,0,pt]) for pt in x_axis_v]
@@ -191,6 +193,6 @@ class Variogram:
 
                 if self.exhaust is not None:
                     axes[0].plot(x_axis_h, self.variances_codes[c]['variances_horiz_exhaust'], color='blue')
-                    axes[1].plot(x_axis_h, self.variances_codes[c]['variances_vert_exhaust'], color='blue')
+                    axes[1].plot(x_axis_v, self.variances_codes[c]['variances_vert_exhaust'], color='blue')
 
                 plt.show()

@@ -46,7 +46,7 @@ def closest_node(grid, x, y, z):
   return idxs
 
 def back_flag(grid, reals, x, y, z, values):
-  if z == None:
+  if z is None:
         z = np.zeros(len(x))
   codes = np.unique(values)
   ids = closest_node(grid, x, y, z) 
