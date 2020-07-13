@@ -112,7 +112,7 @@ def reals_to_indicators(cat_reals):
     return ind_reals
 
 def samples_dist(x, y, z):
-    if z == None:
+    if z is None:
         z = np.zeros(len(x))
     coords = []
     min_dist = []
