@@ -189,7 +189,7 @@ class Variogram:
                     model_var_horiz = [sill-cov.compute([0,0,0],[pt,0,0]) for pt in x_axis_h]
                     model_var_vert = [sill-cov.compute([0,0,0],[0,0,pt]) for pt in x_axis_v]
                     axes[0].plot(x_axis_h, model_var_horiz, color='red')
-                    axes[1].plot(x_axis_h, model_var_vert, color='red')
+                    axes[1].plot(x_axis_v, model_var_vert, color='red')
 
                 if self.exhaust is not None:
                     axes[0].plot(x_axis_h, self.variances_codes[c]['variances_horiz_exhaust'], color='blue')
