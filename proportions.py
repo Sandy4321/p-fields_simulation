@@ -15,7 +15,7 @@ def prop_reals(reals, cats):
     props[c] = cat_props
   return props
 
-def cat_plot(target, reals, weights=None, title='Proportions'):
+def cat_plot(target, reals, weights=None, title='Proportions', savefig=None):
   #plotting target declustered histogram
   weights = np.array(weights) if weights is not None else np.array([1/len(target)] * len(target))
   cats = np.unique(target)
@@ -33,6 +33,8 @@ def cat_plot(target, reals, weights=None, title='Proportions'):
   #plotting realizations boxplots
   reals_props = prop_reals(reals, cats)
   plt.boxplot(reals_props.values(), positions=cats_labels, manage_ticks=False)
+  if savefig is not None:
+    plt.savefig(savefig, dpi=500)
   plt.show()
 
 def closest_node(grid, x, y, z):
@@ -45,7 +47,7 @@ def closest_node(grid, x, y, z):
         idxs.append(neighs)
   return idxs
 
-def back_flag(grid, reals, x, y, z, values):
+def back_flag(grid, reals, x, y, z, values, savefig=None):
   if z is None:
         z = np.zeros(len(x))
   codes = np.unique(values)
@@ -60,4 +62,6 @@ def back_flag(grid, reals, x, y, z, values):
   plt.xticks(np.arange(len(codes))+0.5, labels=codes)
   plt.xlabel('Predicted')
   plt.ylabel('Actual')
+  if savefig is not None:
+    plt.savefig(savefig, dpi=500)
   figure = sns_plot.get_figure()
